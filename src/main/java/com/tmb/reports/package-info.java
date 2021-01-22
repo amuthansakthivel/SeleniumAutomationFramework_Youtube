@@ -1,5 +1,5 @@
 /**
- * Package contains classes related to {@link com.aventstack.extentreports.ExtentReports} initialisation and management
+ * Package contains classes related to ExtentReports initialisation and management
  * 
  * @author Amuthan Sakthivel
  * @version 1.0

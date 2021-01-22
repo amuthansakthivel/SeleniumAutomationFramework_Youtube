@@ -60,13 +60,14 @@ public final class Driver {
 	private Driver() {}
 
 	/**
+	 * Gets the browser value and initialise the browser based on that
 	 * 
 	 * @author Amuthan Sakthivel
 	 * Jan 20, 2021
 	 * @param browser Value will be passed from {@link com.tmb.tests.BaseTest}. Values can be chrome and firefox
+	 * TODO WebDriverManager implementation
 	 */
 	public static void initDriver(String browser)  {
-
 		if(Objects.isNull(DriverManager.getDriver())) {
 			if(browser.equalsIgnoreCase("chrome")) {
 				System.setProperty("webdriver.chrome.driver",FrameworkConstants.getChromeDriverPath()); 
@@ -80,6 +81,12 @@ public final class Driver {
 		}
 	}
 
+	/**
+	 * Terminates the browser instance.
+	 * Sets the threadlocal to default value, i.e null.
+	 * @author Amuthan Sakthivel
+	 * Jan 22, 2021
+	 */
 	public static void quitDriver() {
 		if(Objects.nonNull(DriverManager.getDriver())) {
 			DriverManager.getDriver().quit();

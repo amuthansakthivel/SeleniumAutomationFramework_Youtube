@@ -28,7 +28,6 @@ public final class DynamicXpathUtils {
 	 * @param xpath Xpath with wildcard string
 	 * @param value value to be replaced in place of wildcard
 	 * @return dynamic xpath string
-	 * TODO Using varags for easier processing
 	 * 
 	 */
 	public static String getXpath(String xpath, String value) {
@@ -48,4 +47,6 @@ public final class DynamicXpathUtils {
 		return String.format(xpath, value1,value2);
 	}
 
+	
+	
 }

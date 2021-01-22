@@ -1,5 +1,5 @@
 /**
- * Package contains classes related to driver initialisation and management
+ * Package contains classes related to Utilities
  * 
  * @author Amuthan Sakthivel
  * @version 1.0

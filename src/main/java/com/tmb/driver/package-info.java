@@ -1,5 +1,5 @@
 /**
- * Package contains classes related to {@link org.openqa.selenium.WebDriver} initialisation and management
+ * Package contains classes related to WebDriver initialisation and management
  * 
  * @author Amuthan Sakthivel
  * @version 1.0

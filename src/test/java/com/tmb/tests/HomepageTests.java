@@ -14,9 +14,7 @@ import com.tmb.driver.DriverManager;
 
 public final class HomepageTests extends BaseTest{
 	
-	private HomepageTests() {
-		
-	}
+	private HomepageTests() {}
 	/*
 	 * Validate whether the title is containing Google Search or google search
 	 * validate whether the title is not null and the length of title is greater than 15 and less than 100
