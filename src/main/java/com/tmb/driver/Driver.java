@@ -28,6 +28,8 @@ import com.tmb.constants.FrameworkConstants;
 import com.tmb.enums.ConfigProperties;
 import com.tmb.utils.PropertyUtils;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 /**
  * 
  * Driver class is responsible for invoking and closing the browsers.
@@ -65,16 +67,16 @@ public final class Driver {
 	 * @author Amuthan Sakthivel
 	 * Jan 20, 2021
 	 * @param browser Value will be passed from {@link com.tmb.tests.BaseTest}. Values can be chrome and firefox
-	 * TODO WebDriverManager implementation
+	 * 
 	 */
 	public static void initDriver(String browser)  {
 		if(Objects.isNull(DriverManager.getDriver())) {
 			if(browser.equalsIgnoreCase("chrome")) {
-				System.setProperty("webdriver.chrome.driver",FrameworkConstants.getChromeDriverPath()); 
+				WebDriverManager.chromedriver().setup();
 				DriverManager.setDriver(new ChromeDriver());
 			}
 			else if(browser.equalsIgnoreCase("firefox")) {
-				System.setProperty("webdriver.gecko.driver",FrameworkConstants.getGeckoDriverPath()); 
+				WebDriverManager.firefoxdriver().setup();
 				DriverManager.setDriver(new FirefoxDriver());
 			}
 			DriverManager.getDriver().get(PropertyUtils.get(ConfigProperties.URL));
