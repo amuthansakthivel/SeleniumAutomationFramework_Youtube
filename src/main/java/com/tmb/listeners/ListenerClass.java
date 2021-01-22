@@ -12,19 +12,43 @@ import com.tmb.annotations.FrameworkAnnotation;
 import com.tmb.reports.ExtentLogger;
 import com.tmb.reports.ExtentReport;
 
+/**
+ * Implements {@link org.testng.ITestListener} and {@link org.testng.ISuiteListener} to leverage the abstract methods
+ * Mostly used to help in extent report generation
+ * 
+ * <pre>Please make sure to add the listener details in the testng.xml file</pre>
+ * 
+ * Jan 21, 2021 
+ * @author Amuthan Sakthivel
+ * @version 1.0
+ * @since 1.0
+ */
 public class ListenerClass implements ITestListener, ISuiteListener {
 
+	/**
+	 * Initialise the reports with the file name
+	 * @see com.tmb.reports.ExtentReport
+	 */
 	@Override
 	public void onStart(ISuite suite) {
 			ExtentReport.initReports();
 	}
 
+	/**
+	 * Terminate the reports
+	 * @see com.tmb.reports.ExtentReport
+	 */
 	@Override
 	public void onFinish(ISuite suite) {
 			ExtentReport.flushReports();
 			
 	}
 
+	/**
+	 * Starts a test node for each testng test
+	 * @see com.tmb.reports.ExtentReport
+	 * @see com.tmb.annotations.FrameworkAnnotation
+	 */
 	@Override
 	public void onTestStart(ITestResult result) {
 		ExtentReport.createTest(result.getMethod().getDescription());
@@ -34,11 +58,20 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 			.category());
 	}
 
+	/**
+	 * Marks the test as pass and logs it in the report
+	 * @see com.tmb.reports.ExtentLogger
+	 */
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		ExtentLogger.pass(result.getMethod().getMethodName() +" is passed");
 	}
 
+	/**
+	 * Marks the test as fail,append base64 screenshot and logs it in the report
+	 * @see com.tmb.reports.ExtentLogger
+	 * @see com.tmb.utils.ScreenshotUtils
+	 */
 	@Override
 	public void onTestFailure(ITestResult result) {
 	
@@ -48,6 +81,10 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 		
 	}
 
+	/**
+	 * Marks the test as skip and logs it in the report
+	 * @see com.tmb.reports.ExtentLogger
+	 */
 	@Override
 	public void onTestSkipped(ITestResult result) {
 		ExtentLogger.skip(result.getMethod().getMethodName() +" is skipped");

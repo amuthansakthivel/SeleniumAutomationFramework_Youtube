@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +19,40 @@ import com.tmb.constants.FrameworkConstants;
 import com.tmb.exceptions.FrameworkException;
 import com.tmb.exceptions.InvalidPathForExcelException;
 
+/**
+ * Utility class to read or write to excel.
+ * 
+ * <pre>
+ * <b>
+ * <a href="https://www.youtube.com/channel/UC6PTXUHb6j4Oxf0ccdRI11A">Testing Mini Bytes Youtube channel</a>
+ * </b>
+ * </pre>
+ * 
+ * Jan 22, 2021 
+ * @author Amuthan Sakthivel
+ * @version 1.0
+ * @since 1.0
+ * @see com.tmb.listeners.MethodInterceptor
+ * @see DataProviderUtils
+ */
 public final class ExcelUtils {
 
+	/**
+	 * Private constructor to avoid external instantiation
+	 */
 	private ExcelUtils() {}
 
-	//try with resources
 
+	/**
+	 * Encapsulates all the value from the mentioned excel sheet and store it in
+	 * List holding HashMaps. Key for the map in the column header in the excel sheet.
+	 * 
+	 * @author Amuthan Sakthivel
+	 * Jan 22, 2021
+	 * @param sheetname Excel sheetname to read the value from
+	 * @return List where each index holds a map and Each map holds the details about the test
+	 * TODO create reusable methods
+	 */
 	public static List<Map<String,String>> getTestDetails(String sheetname){
 		List<Map<String,String>> list = null;
 
@@ -53,7 +82,7 @@ public final class ExcelUtils {
 		} catch (IOException e) {
 			throw new FrameworkException("Some io exception happened  while reading excel file");
 		}
-		
+
 		return list;
 	}
 

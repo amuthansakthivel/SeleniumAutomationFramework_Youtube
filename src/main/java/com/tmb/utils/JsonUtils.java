@@ -12,11 +12,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tmb.constants.FrameworkConstants;
 import com.tmb.enums.ConfigProperties;
 
+/**
+ * To construct the map by the reading the config values from JSON. Not used in this framework but can be leveraged
+ * instead of property file based on the requirements
+ * Jan 22, 2021 
+ * @author Amuthan Sakthivel
+ * @version 1.0
+ * @since 1.0
+ * @see PropertyUtils
+ */
 public class JsonUtils {
 	
 	
 	private static Map<String, String> CONFIGMAP;
 
+	/**
+	 * Private constructor to avoid external instantiation
+	 */
 	private JsonUtils() {
 
 	}
