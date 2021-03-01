@@ -21,11 +21,21 @@ SOFTWARE.
 
 package com.tmb.driver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
+
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import com.tmb.constants.FrameworkConstants;
 import com.tmb.enums.ConfigProperties;
+import com.tmb.exceptions.BrowserInvocationFailedException;
+import com.tmb.factories.DriverFactory;
 import com.tmb.utils.PropertyUtils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -69,17 +79,18 @@ public final class Driver {
 	 * @param browser Value will be passed from {@link com.tmb.tests.BaseTest}. Values can be chrome and firefox
 	 * 
 	 */
-	public static void initDriver(String browser)  {
+	public static void initDriver(String browser,String version)  {
+
+		// -->Why executables were not needed when executing in remote
+		
 		if(Objects.isNull(DriverManager.getDriver())) {
-			if(browser.equalsIgnoreCase("chrome")) {
-				WebDriverManager.chromedriver().setup();
-				DriverManager.setDriver(new ChromeDriver());
-			}
-			else if(browser.equalsIgnoreCase("firefox")) {
-				WebDriverManager.firefoxdriver().setup();
-				DriverManager.setDriver(new FirefoxDriver());
+			try {
+				DriverManager.setDriver(DriverFactory.getDriver(browser,version));
+			} catch (MalformedURLException e) {
+				throw new BrowserInvocationFailedException("Please check the capabilities of browser");
 			}
 			DriverManager.getDriver().get(PropertyUtils.get(ConfigProperties.URL));
+			
 		}
 	}
 

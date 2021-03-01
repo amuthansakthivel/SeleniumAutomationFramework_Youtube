@@ -51,6 +51,7 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 	 */
 	@Override
 	public void onTestStart(ITestResult result) {
+	
 		ExtentReport.createTest(result.getMethod().getDescription());
 		ExtentReport.addAuthors(result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(FrameworkAnnotation.class)
 			.author());

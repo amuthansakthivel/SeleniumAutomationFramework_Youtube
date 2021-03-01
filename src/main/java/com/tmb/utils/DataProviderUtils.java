@@ -47,7 +47,7 @@ public final class DataProviderUtils {
 	 * @see com.tmb.tests.AmazonDemoTest 
 	 * @see com.tmb.listeners.AnnotationTransformer
 	 */
-	@DataProvider(parallel=true)
+	@DataProvider(parallel=false)
 	public static Object[] getData(Method m) {
 		String testname = m.getName();
 		if(list.isEmpty()) {
@@ -62,7 +62,6 @@ public final class DataProviderUtils {
 						smalllist.add(list.get(i));
 			}
 		}
-		
 		return smalllist.toArray();
 		
 	}
