@@ -37,5 +37,24 @@ services:
     environment:
       - HUB_HOST=selenium-hub
       - HUB_PORT=4444
-    restart: on-failure:3   
+    restart: on-failure:3
+  elasticsearch:
+    image: elasticsearch:7.8.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    image: kibana:7.8.0
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch:elasticsearch  
+    ports:
+      - "5601:5601"  
+     
+         
          

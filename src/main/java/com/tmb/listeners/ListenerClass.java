@@ -11,6 +11,7 @@ import org.testng.ITestResult;
 import com.tmb.annotations.FrameworkAnnotation;
 import com.tmb.reports.ExtentLogger;
 import com.tmb.reports.ExtentReport;
+import com.tmb.utils.ELKUtils;
 
 /**
  * Implements {@link org.testng.ITestListener} and {@link org.testng.ISuiteListener} to leverage the abstract methods
@@ -66,6 +67,7 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		ExtentLogger.pass(result.getMethod().getMethodName() +" is passed");
+		ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "pass");
 	}
 
 	/**
@@ -79,6 +81,7 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 			ExtentLogger.fail(result.getMethod().getMethodName() +" is failed", true);
 			ExtentLogger.fail(result.getThrowable().toString());
 			ExtentLogger.fail(Arrays.toString(result.getThrowable().getStackTrace()));
+			ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "fail");
 		
 	}
 
@@ -89,6 +92,7 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 	@Override
 	public void onTestSkipped(ITestResult result) {
 		ExtentLogger.skip(result.getMethod().getMethodName() +" is skipped");
+		ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "skip");
 	}
 
 	@Override

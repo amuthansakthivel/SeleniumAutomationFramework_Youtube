@@ -3,6 +3,7 @@ package com.tmb.tests;
 import java.util.Map;
 
 import org.assertj.core.api.Assertions;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import com.tmb.annotations.FrameworkAnnotation;
@@ -49,7 +50,7 @@ public final class OrangeHRMTests extends BaseTest {
 				.clickWelcome().clickLogout()
 				.getTitle();
 		Assertions.assertThat(title)
-			.isEqualTo("OrangeHRM");
+			.isEqualTo("OrangeHRM123");
 		
 	}
 	
@@ -59,8 +60,9 @@ public final class OrangeHRMTests extends BaseTest {
 				.enterUserName(data.get("username")).enterPassWord(data.get("password")).clickLogin()
 				.clickWelcome().clickLogout()
 				.getTitle();
-		Assertions.assertThat(title)
-			.isEqualTo("OrangeHRM");
+		throw new SkipException("skip");
+		/*Assertions.assertThat(title)
+			.isEqualTo("OrangeHRM");*/
 		
 	}
 	

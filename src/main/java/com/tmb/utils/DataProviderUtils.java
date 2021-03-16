@@ -47,7 +47,7 @@ public final class DataProviderUtils {
 	 * @see com.tmb.tests.AmazonDemoTest 
 	 * @see com.tmb.listeners.AnnotationTransformer
 	 */
-	@DataProvider(parallel=false)
+	@DataProvider(parallel=true)
 	public static Object[] getData(Method m) {
 		String testname = m.getName();
 		if(list.isEmpty()) {
