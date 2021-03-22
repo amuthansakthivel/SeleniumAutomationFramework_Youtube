@@ -23,12 +23,12 @@ import com.tmb.pages.AmazonHomePage;
  * @since 1.0
  */
 public final class AmazonDemoTest extends BaseTest{
-	
+
 	/**
 	 * Private constructor to avoid external instantiation
 	 */
 	private AmazonDemoTest() {}
-	
+
 	/**
 	 * Test Name mentioned here should match the column name "testname" in excel sheet.This is mandatory to run this
 	 * test. Otherwise it will be ignored. <p>
@@ -43,7 +43,7 @@ public final class AmazonDemoTest extends BaseTest{
 	@FrameworkAnnotation(author= {"Amuthan","Sachin"}, 
 	category = {CategoryType.REGRESSION,CategoryType.MINIREGRESSION})
 	public void amazonTest(Map<String,String> data) {
-		
+
 		String title =new AmazonHomePage().clickHamburger()
 				.clickComputer()
 				.clickOnSubMenuItem(data.get("menutext")).getTitle();

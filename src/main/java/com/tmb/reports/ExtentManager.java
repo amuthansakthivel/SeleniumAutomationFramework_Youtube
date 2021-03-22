@@ -1,5 +1,7 @@
 package com.tmb.reports;
 
+import java.util.Objects;
+
 import com.aventstack.extentreports.ExtentTest;
 import com.tmb.driver.Driver;
 
@@ -27,7 +29,7 @@ public class ExtentManager {
 	 * Jan 21, 2021
 	 * @return Thread safe {@link com.aventstack.extentreports.ExtentTest} instance.
 	 */
-	public static ExtentTest getExtentTest() { //default --> it can be only accessed within the package --> private packages
+	 static ExtentTest getExtentTest() {
 		return extTest.get();
 	}
 
@@ -37,10 +39,11 @@ public class ExtentManager {
 	 * @author Amuthan Sakthivel
 	 * Jan 21, 2021
 	 * @param test {@link com.aventstack.extentreports.ExtentTest} instance that needs to saved from Thread safety issues.<p>
-	 * TODO Disallow null assignment and call unload method instead. 
 	 */
 	static void setExtentTest(ExtentTest test) {
+		if(Objects.nonNull(test)) {
 		extTest.set(test);
+		}
 	}
 
 	/**

@@ -66,6 +66,9 @@ public final class FrameworkConstants {
 		}
 	}
 	
+	/* 
+	 * TODO Lombak Plugin to remove the boiler plate code
+	 */
 	public static String getGeckoDriverPath() {
 		return GECKODRIVERPATH;
 	}

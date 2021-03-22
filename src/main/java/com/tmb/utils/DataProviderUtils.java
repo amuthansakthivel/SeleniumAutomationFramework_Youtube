@@ -47,11 +47,12 @@ public final class DataProviderUtils {
 	 * @see com.tmb.tests.AmazonDemoTest 
 	 * @see com.tmb.listeners.AnnotationTransformer
 	 */
-	@DataProvider(parallel=true)
+	@DataProvider(parallel=false)
 	public static Object[] getData(Method m) {
 		String testname = m.getName();
 		if(list.isEmpty()) {
 			list = ExcelUtils.getTestDetails(FrameworkConstants.getIterationDatasheet());
+			System.out.println(list);
 		}
 		
 		List<Map<String, String>> smalllist = new ArrayList<>();
@@ -62,6 +63,7 @@ public final class DataProviderUtils {
 						smalllist.add(list.get(i));
 			}
 		}
+		System.out.println(smalllist);
 		return smalllist.toArray();
 		
 	}

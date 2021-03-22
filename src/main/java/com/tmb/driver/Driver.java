@@ -81,16 +81,15 @@ public final class Driver {
 	 */
 	public static void initDriver(String browser,String version)  {
 
-		// -->Why executables were not needed when executing in remote
 		
 		if(Objects.isNull(DriverManager.getDriver())) {
 			try {
 				DriverManager.setDriver(DriverFactory.getDriver(browser,version));
+			
 			} catch (MalformedURLException e) {
 				throw new BrowserInvocationFailedException("Please check the capabilities of browser");
 			}
 			DriverManager.getDriver().get(PropertyUtils.get(ConfigProperties.URL));
-			
 		}
 	}
 

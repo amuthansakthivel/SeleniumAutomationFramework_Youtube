@@ -23,8 +23,20 @@ import io.restassured.response.Response;
  */
 public class ELKUtils {
 
+	/**
+	 * Private constructor to avoid external instantiation
+	 */
 	private ELKUtils() {}
 
+	/**
+	 * Constructs the document that needs to be injected to Elasticsearch using Map interface.
+	 * Can also use a POJO to construct the json
+	 * 
+	 * @author Amuthan Sakthivel
+	 * Mar 20, 2021
+	 * @param testname
+	 * @param status
+	 */
 	public static void sendDetailsToElk(String testname,String status) {
 
 		if(PropertyUtils.get(ConfigProperties.SENDRESULTTOELK).equalsIgnoreCase("yes")) {
@@ -37,7 +49,7 @@ public class ELKUtils {
 					.log()
 					.all()
 					.body(map)
-					.post("http://localhost:9200/regression/results");
+					.post(PropertyUtils.get(ConfigProperties.ELASTICURL));
 
 			Assert.assertEquals(response.statusCode(), 201);
 

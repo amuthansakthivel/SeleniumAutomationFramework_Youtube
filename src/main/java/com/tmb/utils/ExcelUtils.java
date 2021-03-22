@@ -82,8 +82,10 @@ public final class ExcelUtils {
 		} catch (IOException e) {
 			throw new FrameworkException("Some io exception happened  while reading excel file");
 		}
-
+		System.out.println(list);
 		return list;
 	}
+	
+	
 
 }

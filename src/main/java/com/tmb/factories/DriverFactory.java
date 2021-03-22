@@ -29,6 +29,16 @@ public final class DriverFactory {
 
 	private DriverFactory() {}
 
+	/**
+	 * 
+	 * @author Amuthan Sakthivel
+	 * Mar 20, 2021
+	 * @param browser
+	 * @param version
+	 * @return
+	 * @throws MalformedURLException
+	 * TODO Remove hardcoded value of grid url
+	 */
 	public static WebDriver getDriver(String browser,String version) throws MalformedURLException {
 
 		WebDriver driver=null;
@@ -39,7 +49,7 @@ public final class DriverFactory {
 				DesiredCapabilities cap = new DesiredCapabilities();
 				cap.setBrowserName(BrowserType.CHROME);
 				cap.setVersion(version);
-				driver =new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), cap);
+				driver =new RemoteWebDriver(new URL(PropertyUtils.get(ConfigProperties.SELENIUMGRIDURL)), cap);
 			}
 			else {
 				WebDriverManager.chromedriver().setup();
@@ -52,7 +62,7 @@ public final class DriverFactory {
 				DesiredCapabilities cap = new DesiredCapabilities();
 				cap.setBrowserName(BrowserType.FIREFOX);
 				cap.setVersion(version);
-				driver =new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), cap);
+				driver =new RemoteWebDriver(new URL(PropertyUtils.get(ConfigProperties.SELENIUMGRIDURL)), cap);
 			} else {
 				WebDriverManager.firefoxdriver().setup();
 				driver = new FirefoxDriver();
