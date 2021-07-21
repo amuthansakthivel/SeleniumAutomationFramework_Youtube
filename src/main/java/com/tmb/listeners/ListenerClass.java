@@ -1,17 +1,14 @@
 package com.tmb.listeners;
 
-import java.util.Arrays;
-
-import org.testng.ISuite;
-import org.testng.ISuiteListener;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-
 import com.tmb.annotations.FrameworkAnnotation;
-import com.tmb.reports.ExtentLogger;
 import com.tmb.reports.ExtentReport;
 import com.tmb.utils.ELKUtils;
+import org.testng.*;
+
+import java.util.Arrays;
+
+import static com.tmb.enums.LogType.*;
+import static com.tmb.reports.FrameworkLogger.log;
 
 /**
  * Implements {@link org.testng.ITestListener} and {@link org.testng.ISuiteListener} to leverage the abstract methods
@@ -62,36 +59,36 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 
 	/**
 	 * Marks the test as pass and logs it in the report
-	 * @see com.tmb.reports.ExtentLogger
+	 * @see com.tmb.reports.FrameworkLogger
 	 */
 	@Override
 	public void onTestSuccess(ITestResult result) {
-		ExtentLogger.pass(result.getMethod().getMethodName() +" is passed");
+		//ExtentLogger.pass(result.getMethod().getMethodName() +" is passed");
+		log(PASS,result.getMethod().getMethodName() +" is passed");
 		ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "pass");
 	}
 
 	/**
 	 * Marks the test as fail,append base64 screenshot and logs it in the report
-	 * @see com.tmb.reports.ExtentLogger
+	 * @see com.tmb.reports.FrameworkLogger
 	 * @see com.tmb.utils.ScreenshotUtils
 	 */
 	@Override
 	public void onTestFailure(ITestResult result) {
-	
-			ExtentLogger.fail(result.getMethod().getMethodName() +" is failed", true);
-			ExtentLogger.fail(result.getThrowable().toString());
-			ExtentLogger.fail(Arrays.toString(result.getThrowable().getStackTrace()));
+			log(FAIL,result.getMethod().getMethodName() +" is failed");
+			log(FAIL,result.getThrowable().toString());
+			log(FAIL,Arrays.toString(result.getThrowable().getStackTrace()));
 			ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "fail");
-		
 	}
 
 	/**
 	 * Marks the test as skip and logs it in the report
-	 * @see com.tmb.reports.ExtentLogger
+	 * @see com.tmb.reports.FrameworkLogger
 	 */
 	@Override
 	public void onTestSkipped(ITestResult result) {
-		ExtentLogger.skip(result.getMethod().getMethodName() +" is skipped");
+		//ExtentLogger.skip(result.getMethod().getMethodName() +" is skipped");
+		log(SKIP,result.getMethod().getMethodName() +" is skipped");
 		ELKUtils.sendDetailsToElk(result.getMethod().getDescription(), "skip");
 	}
 

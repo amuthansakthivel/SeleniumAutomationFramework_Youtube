@@ -8,7 +8,7 @@ import com.tmb.driver.DriverManager;
 
 public final class AmazonHomePage extends BasePage{
 
-	@FindBy(id="nav-hamburger-menu") 
+	@FindBy(id="nav-hamburger-menu")
 	private WebElement linkHamburger;
 	
 	/**
