@@ -25,7 +25,7 @@ import com.tmb.enums.CategoryType;
  * @author Amuthan Sakthivel
  * @version 1.0
  * @since 1.0
- * @see com.tmb.tests.AmazonDemoTest
+ * @see com.tmb.tests;
  * @see com.tmb.enums.CategoryType
  */
 

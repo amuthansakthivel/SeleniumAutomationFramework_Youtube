@@ -1,9 +1,8 @@
 package com.tmb.pages;
 
-import org.openqa.selenium.By;
-
 import com.tmb.enums.WaitStrategy;
 import com.tmb.utils.DynamicXpathUtils;
+import org.openqa.selenium.By;
 
 public final class AmazonHamburgerMenuPage extends BasePage{
 
