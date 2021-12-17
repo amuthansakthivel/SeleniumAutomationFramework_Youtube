@@ -271,29 +271,384 @@ Create these methods in ExtentReport class
 - I can have mutiple streams to be used within try with resources
 
 
-## TO DO - Add notes from here
+## Exception Handling
+- All a developer can handle will come under the category of Checked and Unchecked exceptions
+- UnChecked/Runtime Exceptions - Java cannot interpret these, and Java donot ask me to handle these.
+    - But as a programmer, if i know a RunTimeException can occur, then I can handle using try catch block
+- Checked/Compile Time Exceptions - Java can interpret at compile time
+- Throwing Exceptions too will be a kind of Exception Handling, but, in case of any exception scenario, the program gets terminated as I did not handled
+- If I do not want to terminate the program in a exception scenario, I will have to handle the exception using try catch block
+    - In this way, I do not have to propagate the exception to the caller methods
+### Issues with this approach
+- If the bottom level layers handles the exception themselves(here b() and c() methods), then the top layer is unaware of these bottom level exception
+handling
+- Its better to entry the exception in each of the layer and handle the exception at the top layer
+- I can also throw the RunTimeException, and compiler
+    - will not ask me to handle this
+    - will think that the program is getting terminated in this case
+- With the above approach, by throwing a new RunTimeException("exception message"), I will stop the program from now continuing further and
+to not give raise to other irrelevant exceptions like NPE, etc
+- But instead of RunTimeException, create another customized exception. Why?
+    - The exception itself has to tell me what this exception is all about
 
-```sh
-cd dillinger
-npm i
-node app
-```
+### Conversion of one exception to another - Wrapping of Exception
+- Example:
+If I get a DB exception like - Table Details are not available, or Query did not fetched any value, or any error that is not relevant for an end user,
+in that case, i can convert this exception/wrap this exception into a customized exception to show relevant information to the user, saying "connectivity error, please try again later"
+- I can also throw a new RunTime exception
+IMPORTANT:
+If I throw a new exception, the exception's stack trace WILL NOT be propagated to the caller methods
 
-For production environments...
+### Exception Consolidation
+- Instead of throwing exceptions then and there, I can consolidate all the exceptions and throw a RunTimeException
 
-```sh
-npm install --production
-NODE_ENV=production node app
-```
+### Creating a custom exception
+- Create a customized exception that extends from RunTimeException,because the program will be terminated once the exception arises.
+Example - If the data provider excel sheet is not found, I will have to terminate the program there itself
+- As my custom exception is extending RunTimeException, i do not have to throw the Exception like below, and I can remove the "throws Exception"
+- As I don't have to throw this Exception anymore, I can go to the methods where this getValue() is being called, and I can remove the
+"throws Exception" there as well
 
-## A table
+#### Why I have to STOP the program in case of RunTimeException?
+If there is a problem, I need to STOP the program. There is no point in catching them and re running the program to get another error message
 
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
+### Handling Exception in static block
+- Instead of catching the exception in the static block, which arises chance to another exceptions, as below, throw an instance of RunTimeException
+- Static Block will be executed even before the main method, as this block executes when the class loader loads the class into memory, and there
+is no JVM available for me to handle the execption raised in the static block
+- To solve the above issue, use System.exit(0); in the catch block
 
+#### Exception Handling Summary
+- Compiler can detect the checked exceptions at compile time so that i will have to either
+    - handle it using the try{}catch(){} block, or
+    - propagate the exception to the caller method
+- When to use try catch?
+    - When you think this operation is very small operation and you don't want to terminate or interrupt the user flow, then use th try catch block
+- If you want to stop the program?
+    - Either i can throw the exception to the caller
+    - If you do not want to throw the exception to the caller, as there are so many caller methods, and thereby you don't want to propagate the exception
+    then, you can try, catch and rethrow in the form of runtime exception
+
+## Java Documentation for framework
+- To overcome the below issues,
+- Different OS
+- Different browser versions needs different driver versions
+- To solve the above problem, this guy have created a webdrivermanager .jar
+- So, instead of writing lengthy code just for locating the driver, you can leverage boniagarcia's drivermanager's .jar utility
+- From the second time onwards, this utility will search for dricver information from cache, and the result will be fast
+- It uses this resolution.properties to find the resolutuon between the browser and driver
+- The resolution cache(TTL - Time To Live) will wait and will not work until the cache expires
+- Incase of any issues in wedriver, invoke .clearResolutionCache() method, and WebDriverManager newly fetches the Driver informtIon
+- If I am behind the corporate network proxies, and if i am getting exceptions while using WebDriverMagaer,
+follow as below to work with WebDriverManager
+
+## Problems with Test Automation, What Docker Solves?
+- Why I have to learn Docker, what are the problems that I have
+- The below are some of the common problems that I face in Test Automation
+
+## Virtualization vs Containerization
+- Container will use the HOST OS
+- Containers will only need few binaries and libs, other than these, the container will consume all other things from the host os
+- Therby spinning up and spinning down is very faster
+
+## Creating Driver Factory
+- Create a DriverFactory class to avoid clutter in the Driver classs
+- Keep the Driver class clean like the below
+
+## Docker Basics
+- Containers are light weight VMs. In this VM, I can have only one application
+- Docker Engine works similar to Client Server architecture.
+- Server:
+- Once I start the Docker, it will start as a Docker daemon, which will continuosly run until i shutdown the PC
+- Docker daemon is responsible for managing my containers
+- We dont have access to me to work wit, rather i can interact with it using Docker Client CLI
+- Client:
+- I will be sending the commands through the command prompt, and these commands will be sent to docker daemon through REST API requests
+- - If I have to create a container, I need an image that needs to be installed in a particular VM
+- I will do : docker run <image_name>, which will create a container for me
+- container is an instance of the image
+- Docker Hub will contain all the images for me to pull(means to download)
+- In Test Automation world, all the containers that I use will be mostly of linux based containers
+- Means, Google team has developed and uploaded the chrome image based on linux, to docker hub
+- So whatever the containers that I create from the chrome image will be of linux containers
+- I can have multiple containers from the same image
+eg: I can have multiple tabs in the chrome browser
+- I cannot have multiple images inside a container, as the container is the running instance of the image
+
+- Above uses cases for automation test engineers can be understood using below example
+
+### SCENARIO - A
+- Inside Docker, I will have Chrome, Firefox and Selenium Grid
+containers - image like Chrome browser and Firefox browser
+- I have my automation tests in my physical infrastructure
+- Instead of running the tests in my local machines, I am delegating
+the tests to the containers in docker
+So the tests will be ran and the test results will be uploaded to the
+local infrastructure
+
+### SCENARIO - B
+- I can ship all my automated tests in the form of an image
+and I can create a container for that image, so the entire entity will be
+dockerised now
+
+## Docker Image
+- Tags are specific version of the image, eg: chrome 88, chrome 89, etc
+- To pull an image, follow as below. By default tag will be latest, if you want to pull a specific tag, append the tag name
+- All the official Docker images will have author name as library
+
+### Key Points
+- A particular image will have all the things necessary to run the chrome image
+It will not depend on anyother thing else
+- Class / Image
+Object / Docker Container
+- I can create multiple containers from the same image
+
+## Executing tests in - Selenium Standalone Chrome Container
+- Docker commonly used commands
+- I can only pull an image, I CANNOT pull a container
+- PULL the selenium standalone-chrome IMAGE. Here, Selenium is the AUTHOR, and sandalone-chrome is the IMAGE
+- Now create a CONTAINER for the IMAGE that was pulled above
+- Now the container has been SPINNED UP, and Docker has created an ID for the created container
+This is similar to initializing an object, we have not used it until now. To use it, I have to start the container
+- To start the container, use as below. With the below information, the Docker DAEMON will start the new container
+Whenever docker responds back with the container id, then I can understand that the container is started
+- To check whether a container is created and started, follow as below
+- To stop and remove the container, use as below
+- Instead of creating the container and starting it, just use as below, and the command prompt will go in the listening mode
+
+- Here, i am doing a port mapping my locall port to container using(-p), then following the image name(from which image i want to create a container from)
+- i can refer to the below information once i starting the container
+- i have to use -d to have this container start happening in the background, thereby not allowing the container to go in the listening mode
+- i have to use --name <my-container-name> to name my container instead of referring it with the automatically generated id
+- i have to use -p to do the port mapping of the docker container running in my localhost to the docker container at remote
+
+- When accessedt the container at the particular port
+- The Selenium Standalone server is running in docker, and i am seeing this in my local, as i did the port mapping
+
+## Executing tests in - Selenium Standalone Firefox Container, Problem with using STANDALONE CONTAINERS
+- To create a docker container from the firefox image from a tag - 85.0, do this
+- Now, both the firefox and chrome containers are running at 4445 and 4444 ports
+- Now selenium-standalone-firefox can be accessed at 4445
+- Now I can run both the tests in the standalone selenium firefox and chrome containers
+- Now the test runs in standalone firefox container too
+
+### What is the problem here?
+- For each and and every browser type, the port gets changed, and it will be very difficult in the case of running many tests, it will be tougher to delegate tests to docker
+
+### Solution?
+- To use hub, that will run at a port, and i will connect with hub, and hub will automatically delegate the tests to corresponding browsers at different ports
+
+
+## Getting inside of a Standalone Selenium Chrome Container
+
+- Lets access the shell in the container that i am using now
+- By default, the container will not give permission to access, to have the access use as below
+- docker exec
+-t(to tell i want to see the output from the command prompt)
+-i(i want to interact with the command prompt)
+- navigate to location - /opt/selenium
+- With the help of the above three , i could able to execute my tests in this container
+- Selenium Standalone Chrome is a container that will contain its own Selenium Grid kind of infrastructure, and it has a hub, it has a node
+- If I am executing my tests on a docker container, means, i am executing my tests in a linux machine
+
+
+## Setting up Selenium Grid in Docker Environment
+- Normally companies spend so much of money in setting up Selenium Grid infrastructure, but with the advent of Docker, this processs has become so easy
+
+### Problem 
+- If Chrome and Firefox images are running at 4444 ports in Docker environment, I will have to add two different ports in my tests, and this keeps on increasing and time consuming
+
+### Conclusion:
+- If I have to execute my tests in a single version of chrome/firefox, then use Selenium Standalone Chrome/Firefox
+If my requirement is to execute my test on multiple browsers, these standalone containers will not serve the purpose
+- Solution is to use Selenium Grid, and if i move this to Docker, it will be Dockerised Selenium Grid
+
+- Selenium team has created the BASE IMAGE as Linux, so all my NODES and HUB are maintained in Linux containers
+- Steps to move the Selenium Grid to Dockerised Selenium Grid
+1. Create Selenium Hub Container
+2. Create Chrome Node Container and link it to Hub Container
+3. Create Firefox Node Container
+ 
+
+1. Create Selenium Hub Container
+2. Create Chrome Node Container and link it to Hub Container
+- If you already pulled the images, search for those images as below, and refer to them
+- Now as i already have these images, I will have to link these images to the hub
+- Read the above command like:
+docker run -d --link <the name of the selenium hub to link with>:<it will act as the hub> <what is the image that i want to link to this hub>
+
+3. Create Firefox Node Container - Similar way
+- List of docker containers until now
+- Now execute the test
+
+## RESTART Policy - Its importance in Test Automation
+- I am solving the below problem with this Restart Policy
+- RESTART POLICY: Whenever my container is getting crashed, using this, the Docker daemon will SPIN UP the SAME container for me with the SAME IMAGE and SAME INSTRUCTIONS PREVIOUSLY USED
+- To Restart Flag = Restart type
+- use update if the container is already in running state
+
+## Why is a Restart Policy important?
+- Eg: In my automation regression test suite, there are 500 test cases, and if the 5th test case got failed due to the volume or space constaint issues,
+the remaining 495 will not be executed. To fix this, employ Restart Policy
+- There are 4 Restart Policies
+- NO - By default all the containers have NO as the restart policy,
+ON-FAILURE - Restart only on an abnormal failure, but not on the Docker Stop and etc,
+ALWAYS - To restart the container all the times,
+UNLESS STOPPED - The container will gets restarted all the time, except when the docker daemon is stopped, or except i manually stop it
+- In my existing scenario,
+- I can choose ALWAYS restart policy to Selenium Hub docker container and
+- ON-FAILURE restart policy to the chrome and firefox containers
+And also, mention how many times the container have to be restarted, and even then if it is failing, report me back with the issues
+- current scenario - working with busybox container
+- setting restart policy as on-failure and told it - Whenever there is a FAILURE, RETRY for 3 times
+- To check if the restart policy is updated in the container or not, follow as below
+
+
+## Use update if the container is already in running state
+- I can either STOP the currently running containers, and while creating again, use the restart policy
+OR
+- use docker update --restart <flag> $(docker ps -q)
+- To check if the restart policy is updated in the container or not, follow as below
+
+#### If I am using a docker-compose file, or if i am using the dockerised selenium grid, employing restart policy is important in it
+
+#### I will go to docker-compose file, if i have to link multiple chrome and firefox containers to the hub, as it is manual and time consuming
+
+- The reason of me using the Docker Compose file is, instead of me running all the below commands manually, the docker-compose file, do those for me
+- And stopping and removing of the containers is also manual and time consuming
+
+### docker-compose file - file formatting is IMPORTANT and ERROR PRONE
+
+- This is the latest version of the docker compose file
+- The containers in the docker world are termed as services[service = container+ all its configuration]
+- service can be considered as a wrapper around the container, service and container are little bit
+different, but not completely the same
+<== as i can have multiple values for ports, i have written differently with "-" in the next line
+volumes:
+- docker will mount a very small amount of space, it is not sufficient for running lengthier tests
+- -v /dev/shm:/dev/shm is a known work around to avoid browser crashing inside docker container
+- in the above way, i am sharing the memory from localhost docker to where the docker container
+- depends_on:
+- if i don't use depends_on in docker compose file, docker will kick start all the services in parallel
+- here we are telling, please wait until the selenium-hub service is ready, after that trigger chrome, etc
+- Because, I have mentioned depends_on: selenium-hub, chrome and firefox are waiting, until selenium-hub service is running
+- To see the list of containers those were kick started using docker-compose file,
+- To scale the containers, use as below
+Eg: If I give scale value as 10 9 will be added, as one is already up
+
+## Running Selenium Tests in different browser versions using Docker - Changes in Framework
+- Usecase: I want the tests to run on the specified browser versions in the excel sheet
+- Add new column to add the browser version
+- Now the data provided in the excel sheet will be available to me in the form of dataprovider
+- Values in the excel sheet are available in the form of map
+- This map will be feeded to the test method in the form of Object[]
+- To get the value in the excel sheet, i am converting that Object[] into HashMap, and from the HashMap, I am getting the values
+- Add a new parameter to the method
+- And in Driver class, i am passing the browser and calling DriverFactory, which is responsible for initiating the drivers
+- Add a new parameter to this method, to fetch the version
+- Add a paramter to the DriverFactory method too
+- Add the capability to set the version, for both the chrome and firefox
+
+## Summary until now, and the NEED of the real time dashboard
+
+##### ELK Stack - Its inclusion in test automation
+- Elastic Search:
+- Is real-time distributed analytics engine - means, If I insert the data into elastic search, the data will be indexed immediately and i can access those documents immediately
+- The indexed data can be accessed from Kibana
+- Elastic Search internally uses Apache Lucene, which will search the more relevant documents in the order based on the search query
+- Elastic Search exposes REST API
+
+##### Run Elastic Search, Kibana in Docker Containers
+
+##### How to work with Elastic Search
+
+- If I am only inserting the data, there is not need to give the id for the document.
+In this case, I am only inserting the data and using Kibana to get the data, so no need to give the id
+- If I want to retrieve the data, then give the id
+- To do the normal table operations like select *, etc, in the Elastic Search, use the Elastic Search Head Plugin in Chrome
+- Apache Lucene works underneath, and will give a score to the query
+
+
+#### Creation of Real Time Dashboard for Test Automation using Kibana
+- Instead of using Elastic Search Head Plugin, which isn't visually appealing, lets use Kibana to display dashboards
+- Elastic knows by Index, Kibana knows by Index Pattern
+- I have to link both the index and the index pattern
+Step 1: Go to Stack Management - Index Patterns / Create Index Pattern
+Step 2: Select Discover from Analytics and select the elastic search index
+Step 3: Select Visualizations and create various visualizations
+Step 4: Add the visualizations to the dashboard
+
+## Integrate Selenium Automation Framework with Dockerized ELK using Java
+- Add the RestAssured dependency
+- Create a class that invokes the elastic search's POST endpoint
+
+- Integrate this standalone file within the framework
+- Create the utils class, and include the above code there
+- As the test-name and test-status are dynamic, send them as parameters to this method
+- I will be supplying test-name and test-status from the listener class dynamically
+- Call this util class method from the listener class, when ever a test is getting passed, failed, skipped
+- Have the changes in the excel sheet, to have the tests run, skip and fail
+- Do the changes w.r.t docker, as the run mode is remote, start all the docker containers - chrome, firefox, hub
+using docker compose file configuration - docker-compose up
+- Run the test suite using testng.xml
+- With the below configuration, I can avoid sending the results to ELK stack
+- Usecase: When I am developing the application, and work is in progress, i can stop sending the data to ELK
+ 
+
+## Portainer - Run, Manage Docker containers without using commands
+- Portainer is a lightweight management ui that helps me in managing my various docker environments - local/remote/cloud environments
+- Portainer is also available as a docker container, so pull the image and run the container
+- The below is the content to update in docker-compose file w.r.t elastic search and kibana
+- To start portainer docker container, use as below
+- To know what are the containers those are in running state - i will use docker ps
+- But the same can be seen in a presentable way in the portainer
+
+
+- I can do the following things using the Portainer
+- Spin up, down a container
+- Check the available images
+- Build a new image
+- To create a new container, follow below
+- Click Add Container
+
+- Once the container is started, check the logs
+
+
+
+## Refactor existing code
+- Always have a TODO place holder for any refactoring that i plan to do later, along with completeling the existing fucntionality
+- Even though i use the remove(), people will still invoke the setDriver() and pass a null reference, in this case, do the null check
+
+
+#### Selenoid - Live Preview and Video Recording Capability for tests running in Docker
+- Until now, I have used docker containers to run my tests in remote. But there is no facility to see the tests those get executed as a video recording
+- To have that, I will have to download and use VNC viewer, thereby I cannot attach this into JIRA, etc
+- To run the aerokibe selenoid, use as below
+- Start another docker container - Selenoid UI
+- Run the Selenoid through a java program
+- Once we run this program, we can see the live execution in Selenoid
+
+#### Using Consumer Interface in the Framework
+- Our intention is to allow others to use only the static methods, and hide all the other ExtentTest library methods
+- UseCase: When I want to log the information not only in the Extent Reports, but also in the Jenkins Console
+- Using of Log4J will add information to the existing class's code.
+- But the good coding practice says, we should not ALTER the EXISTING methods, meaning,
+"We should not modify the existing class, but we have to provide a facility to extend the class"
+- Create a class FrameworkLogger and have this consumer interface implementation
+- This Java 8 Consumer interface implementation is a optimal alternative to ExtentLogger class
+
+
+
+## Miscellaneous Notes - Forming an XPath, Dynamic Elements, Explicit Wait
+
+- I have to read the below XPath as
+- It's a <div> tag with the text value = Echo & Alexa, and as I prefer to click on a Anchor <a> tag rather than clicking a <div> tag,
+give its parent tag as well as - //div[text()='Echo & Alexa']/parent::a
+- Implementation of Dynamic Elements which is only possible in normal approach and is not possible using Page Factory
+- using this Dynamic Elements approach, I can construct my Web Element [here - xpath] DYNAMICALLY at RUNTIME,
+with this I don't have to create 10 new elements, rather I can do the job with only one line with the Dynamic Web Element Locator strategy
+- In the above case the scenario is, if only the text of the xpath changes, but all other xpath expression remains the same, I can pass the changing value at runtime rather than constructing the web element everytime
+- Not Possible using Page Factory
+
+##### Explicit Wait
+- If the selenium framework finds the element before than the mentioned seconds - 10 seconds above, then the control goes to next step
